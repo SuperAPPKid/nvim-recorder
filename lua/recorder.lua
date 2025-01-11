@@ -85,6 +85,7 @@ local function toggleRecording()
 		notify("Recorded [" .. reg .. "]:\n" .. justRecorded, "nonessential")
 	end
 end
+M.toggleRecording = toggleRecording
 
 ---play the macro recorded in current slot
 local function playRecording()
@@ -186,6 +187,7 @@ local function playRecording()
 		normal(v.count1 .. "@" .. reg)
 	end
 end
+M.playRecording = playRecording
 
 ---changes the active slot
 local function switchMacroSlot()
@@ -203,6 +205,7 @@ local function switchMacroSlot()
 	end
 	notify(msg, "nonessential")
 end
+M.switchMacroSlot = switchMacroSlot
 
 ---edit the current slot
 local function editMacro()
@@ -219,6 +222,7 @@ local function editMacro()
 		notify("Edited Macro [" .. reg .. "]:\n" .. editedMacro, "nonessential")
 	end)
 end
+M.editMacro = editMacro
 
 ---@param mode? "silent"
 local function deleteAllMacros(mode)
@@ -228,6 +232,7 @@ local function deleteAllMacros(mode)
 	end
 	if mode ~= "silent" then notify("All macros deleted.", "nonessential") end
 end
+M.deleteAllMacros = deleteAllMacros
 
 local function yankMacro()
 	breakCounter = 0
@@ -251,6 +256,7 @@ local function yankMacro()
 	fn.setreg(copyToReg, macroContent)
 	notify("Copied Macro [" .. reg .. "]:\n" .. macroContent, "nonessential")
 end
+M.yankMacro = yankMacro
 
 local function addBreakPoint()
 	if isRecording() then
@@ -263,6 +269,7 @@ local function addBreakPoint()
 		if require("dap") then require("dap").toggle_breakpoint() end
 	end
 end
+M.addBreakPoint = addBreakPoint
 
 --------------------------------------------------------------------------------
 -- CONFIG
