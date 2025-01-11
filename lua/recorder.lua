@@ -3,7 +3,6 @@ local M = {}
 local fn = vim.fn
 local v = vim.v
 local opt = vim.opt
-local keymap = vim.keymap.set
 
 -- internal vars
 local config, macroRegs, slotIndex, defaultLogLevel, breakCounter, firstRun
@@ -320,12 +319,6 @@ function M.setup(userConfig)
 		slots = { "a", "b" },
 		dynamicSlots = "static",
 		mapping = {
-			startStopRecording = "q",
-			playMacro = "Q",
-			switchSlot = "<C-q>",
-			editMacro = "cq",
-			deleteAllMacros = "dq",
-			yankMacro = "yq",
 			addBreakPoint = "##",
 		},
 		dapSharedKeymaps = false,
@@ -368,15 +361,6 @@ function M.setup(userConfig)
 	-- setup keymaps
 	toggleKey = config.mapping.startStopRecording
 	breakPointKey = normalizeKeycodes(config.mapping.addBreakPoint)
-	local icon = config.useNerdfontIcons and " " or ""
-	local dapSharedIcon = config.useNerdfontIcons and " /  " or ""
-
-	keymap("n", toggleKey, toggleRecording, { desc = icon .. "Start/Stop Recording" })
-	keymap("n", config.mapping.switchSlot, switchMacroSlot, { desc = icon .. "Switch Macro Slot" })
-	keymap("n", config.mapping.editMacro, editMacro, { desc = icon .. "Edit Macro" })
-	keymap("n", config.mapping.yankMacro, yankMacro, { desc = icon .. "Yank Macro" })
-	-- stylua: ignore
-	keymap("n", config.mapping.deleteAllMacros, deleteAllMacros, { desc = icon .. "Delete All Macros" })
 
 	-- (experimental) if true, nvim-recorder and dap will use shared keymaps:
 	-- 1) `addBreakPoint` will map to `dap.toggle_breakpoint()` outside
@@ -385,11 +369,6 @@ function M.setup(userConfig)
 	-- dap-breakpoint. If there is no dap breakpoint, will play the current
 	-- macro-slot instead
 	dapSharedKeymaps = config.dapSharedKeymaps or false
-	local breakPointDesc = dapSharedKeymaps and dapSharedIcon .. "Breakpoint"
-		or icon .. "Insert Macro Breakpoint."
-	keymap("n", breakPointKey, addBreakPoint, { desc = breakPointDesc })
-	local playDesc = dapSharedKeymaps and dapSharedIcon .. "Continue/Play" or icon .. "Play Macro"
-	keymap("n", config.mapping.playMacro, playRecording, { desc = playDesc })
 end
 
 --------------------------------------------------------------------------------
