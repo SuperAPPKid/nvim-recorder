@@ -1,5 +1,7 @@
 <!-- LTeX: enabled=false -->
+
 # nvim-recorder 📹
+
 <!-- LTeX: enabled=true -->
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-recorder">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-recorder/shield"/></a>
@@ -10,30 +12,31 @@ Enhance the usage of macros in Neovim.
 
 - [Features](#features)
 - [Setup](#setup)
-	* [Installation](#installation)
-	* [Configuration](#configuration)
-	* [Status Line Components](#status-line-components)
+    - [Installation](#installation)
+    - [Configuration](#configuration)
+    - [Status Line Components](#status-line-components)
 - [Basic Usage](#basic-usage)
 - [Advanced Usage](#advanced-usage)
-	* [Performance Optimizations](#performance-optimizations)
-	* [Macro Breakpoints](#macro-breakpoints)
-	* [Lazy-loading the plugin](#lazy-loading-the-plugin)
+    - [Performance Optimizations](#performance-optimizations)
+    - [Macro Breakpoints](#macro-breakpoints)
+    - [Lazy-loading the plugin](#lazy-loading-the-plugin)
 - [About the developer](#about-the-developer)
 
 <!-- tocstop -->
 
 ## Features
-- __Simplified controls__: One key to start and stop recording, a second key for
+
+- **Simplified controls**: One key to start and stop recording, a second key for
   playing the macro. Instead of `qa … q @a @@`, you just do `q … q Q Q`.[^1]
-- __Macro Breakpoints__ for easier debugging of macros. Breakpoints can also be
+- **Macro Breakpoints** for easier debugging of macros. Breakpoints can also be
   set after the recording and are automatically ignored when triggering a macro
   with a count.
-- __Status line components__: Particularly useful if you use `cmdheight=0` where
+- **Status line components**: Particularly useful if you use `cmdheight=0` where
   the recording status is not visible.
-- __Macro-to-Mapping__: Copy a macro, so you can save it as a mapping.
-- __Various quality-of-life features__: notifications with macro content, the
+- **Macro-to-Mapping**: Copy a macro, so you can save it as a mapping.
+- **Various quality-of-life features**: notifications with macro content, the
   ability to cancel a recording, a command to edit macros,
-- __Performance Optimizations for large macros__: When the macro is triggered
+- **Performance Optimizations for large macros**: When the macro is triggered
   with a high count, temporarily enable some performance improvements.
 - Uses up-to-date nvim features like `vim.notify`. This means you can get
   confirmation notices with plugins like
@@ -59,7 +62,7 @@ use {
 }
 ```
 
-Calling `setup()` (or `lazy`'s `opts`) is __required__.
+Calling `setup()` (or `lazy`'s `opts`) is **required**.
 
 ### Configuration
 
@@ -77,12 +80,6 @@ require("recorder").setup {
     dynamicSlots = "static",
 
 	mapping = {
-		startStopRecording = "q",
-		playMacro = "Q",
-		switchSlot = "<C-q>",
-		editMacro = "cq",
-		deleteAllMacros = "dq",
-		yankMacro = "yq",
 		-- ⚠️ this should be a string you don't use in insert mode during a macro
 		addBreakPoint = "##",
 	},
@@ -159,6 +156,7 @@ lualine_z = {
 > from saved recordings
 
 ## Basic Usage
+
 - `startStopRecording`: Starts recording to the current macro slot (so you do
   not need to specify a register). Press again to end the recording.
 - `playMacro`: Plays the macro in the current slot (without the need to specify
@@ -180,11 +178,13 @@ lualine_z = {
 ## Advanced Usage
 
 ### Performance Optimizations
+
 Running macros with a high count can be demanding on the system and result in
 lags. For this reason, `nvim-recorder` provides some performance optimizations
 that are temporarily enabled when a macro with a high count is run.
 
 Note that these optimizations do have some potential drawbacks.
+
 - [`lazyredraw`](https://neovim.io/doc/user/options.html#'lazyredraw') disables
   redrawing of the screen, which makes it harder to notice edge cases not
   considered in the macro. It may also appear as if the screen is frozen for a
@@ -196,16 +196,19 @@ Note that these optimizations do have some potential drawbacks.
   plugins' effect.
 
 ### Macro Breakpoints
+
 `nvim-recorder` allows you to set breakpoints in your macros which can be
 helpful for debugging macros. Breakpoints are automatically ignored when you
 trigger the macro with a count.
 
-__Setting Breakpoints__  
-- *During a recording:* press the `addBreakPoint` key (default: `##`) in normal
-   mode
-- *After a recording:* use `editMacro` and add or remove the `##` manually.
+**Setting Breakpoints**
 
-__Playing Macros with Breakpoints__  
+- _During a recording:_ press the `addBreakPoint` key (default: `##`) in normal
+  mode
+- _After a recording:_ use `editMacro` and add or remove the `##` manually.
+
+**Playing Macros with Breakpoints**
+
 - Using the `playMacro` key, the macro automatically stops at the next
   breakpoint. The next time you press `playMacro`, the next segment of the macro
   is played.
@@ -218,27 +221,29 @@ __Playing Macros with Breakpoints__
 > moving a few characters to the left or right. That way you can also use
 > breakpoints to manually correct irregularities.
 
-__Ignoring Breakpoints__  
-When you play the macro with a *count* (for example `50Q`), breakpoints are
+**Ignoring Breakpoints**  
+When you play the macro with a _count_ (for example `50Q`), breakpoints are
 automatically ignored.
 
 > [!TIP]
 > Add a count of 1 (`1Q`) to play a macro once and still ignore breakpoints.
 
-__Shared Keybindings with `nvim-dap`__  
+**Shared Keybindings with `nvim-dap`**  
 If you are using [nvim-dap](https://github.com/mfussenegger/nvim-dap), you can
 use `dapSharedKeymaps = true` to set up the following shared keybindings:
+
 1. `addBreakPoint` maps to `dap.toggle_breakpoint()` outside
-a recording. During a recording, it adds a macro breakpoint instead.
+   a recording. During a recording, it adds a macro breakpoint instead.
 2. `playMacro` maps to `dap.continue()` if there is at least one
-DAP-breakpoint. If there is no DAP-breakpoint, plays the current
-macro-slot instead.
+   DAP-breakpoint. If there is no DAP-breakpoint, plays the current
+   macro-slot instead.
 
 Note that this feature is experimental, since the [respective API from nvim-dap
 is non-public and can be changed without deprecation
 notice](https://github.com/mfussenegger/nvim-dap/discussions/810#discussioncomment-4623606).
 
 ### Lazy-loading the plugin
+
 `nvim-recorder` is best lazy-loaded on the mappings for `startStopRecording` and
 `playMacro`. However, adding the status line components to `lualine` will cause the
 plugin to load before you start or play a recording.
@@ -285,6 +290,7 @@ lazy-loading it should not have a big impact.
 ```
 
 ## About the developer
+
 In my day job, I am a sociologist studying the social mechanisms underlying the
 digital economy. For my PhD project, I investigate the governance of the app
 economy and how software ecosystems manage the tension between innovation and
@@ -299,8 +305,9 @@ compatibility. If you are interested in this subject, feel free to get in touch.
 style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3'
 border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
-[^1]: As opposed to vim, Neovim already allows you to use `Q` to [play the last
-	recorded macro](https://neovim.io/doc/user/repeat.html#Q). Considering this,
-	the simplified controls really only save you one keystroke for one-off
-	macros. However, as opposed to Neovim's built-in controls, you can still
-	keep using `Q` for playing the not-most-recently recorded macro.
+[^1]:
+    As opposed to vim, Neovim already allows you to use `Q` to [play the last
+    recorded macro](https://neovim.io/doc/user/repeat.html#Q). Considering this,
+    the simplified controls really only save you one keystroke for one-off
+    macros. However, as opposed to Neovim's built-in controls, you can still
+    keep using `Q` for playing the not-most-recently recorded macro.
